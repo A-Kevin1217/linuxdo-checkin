@@ -47,7 +47,7 @@ os.environ.pop("DYLD_LIBRARY_PATH", None)
 USERNAME = os.environ.get("LINUXDO_USERNAME")
 PASSWORD = os.environ.get("LINUXDO_PASSWORD")
 COOKIES = os.environ.get("LINUXDO_COOKIES", "").strip()  # 手动设置的 Cookie 字符串，优先使用
-SOCKS5_PROXY = os.environ.get("SOCKS5_PROXY", "").strip()
+HTTP_PROXY = os.environ.get("HTTP_PROXY", "").strip()
 BROWSE_ENABLED = os.environ.get("BROWSE_ENABLED", "true").strip().lower() not in [
     "false",
     "0",
@@ -83,18 +83,18 @@ class LinuxDoBrowser:
             .incognito(True)
             .set_argument("--no-sandbox")
         )
-        if SOCKS5_PROXY:
-            co.set_proxy(SOCKS5_PROXY)
+        if HTTP_PROXY:
+            co.set_proxy(HTTP_PROXY)
         co.set_user_agent(
             f"Mozilla/5.0 ({platformIdentifier}) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36"
         )
         self.browser = Chromium(co)
         self.page = self.browser.new_tab()
         self.session = requests.Session()
-        if SOCKS5_PROXY:
+        if HTTP_PROXY:
             self.session.proxies = {
-                "http": SOCKS5_PROXY,
-                "https": SOCKS5_PROXY,
+                "http": HTTP_PROXY,
+                "https": HTTP_PROXY,
             }
         self.session.headers.update(
             {
