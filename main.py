@@ -48,6 +48,7 @@ USERNAME = os.environ.get("LINUXDO_USERNAME")
 PASSWORD = os.environ.get("LINUXDO_PASSWORD")
 COOKIES = os.environ.get("LINUXDO_COOKIES", "").strip()  # 手动设置的 Cookie 字符串，优先使用
 HTTP_PROXY = os.environ.get("HTTP_PROXY", "").strip()
+CHROMIUM_PATH = os.environ.get("CHROMIUM_PATH", "").strip()
 BROWSE_ENABLED = os.environ.get("BROWSE_ENABLED", "true").strip().lower() not in [
     "false",
     "0",
@@ -83,6 +84,8 @@ class LinuxDoBrowser:
             .incognito(True)
             .set_argument("--no-sandbox")
         )
+        if CHROMIUM_PATH:
+            co.set_browser_path(CHROMIUM_PATH)
         if HTTP_PROXY:
             co.set_proxy(HTTP_PROXY)
         co.set_user_agent(
